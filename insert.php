@@ -3,9 +3,9 @@ require "inc/db-connect.php";
 
 if (!empty($_POST)) {
 
-    $kunde = '';
-    if (isset($_POST['kunde'])) {
-        $kunde = $_POST['kunde'];
+    $projekt = '';
+    if (isset($_POST['projekt'])) {
+        $projekt = $_POST['projekt'];
 
     }
     $datumstart = '';
@@ -23,18 +23,19 @@ if (!empty($_POST)) {
         $taetigkeiten = $_POST['taetigkeiten'];
     }
 
+    $mitarbeiter = '';
+    if (isset($_POST['mitarbeiter'])) {
+        $mitarbeiter = $_POST['mitarbeiter'];
+    }
 
-    if (!empty($kunde) && !empty($datumstart) && !empty($datumende) && !empty($taetigkeiten)) {
-        
-            $stmt = $pdo->prepare('INSERT INTO tblzeiten (fkKunde, Start, Ende, fkTaetigkeit) VALUES (:kunde, :datumstart, :datumende, :taetigkeiten)'); 
+            $stmt = $pdo->prepare('INSERT INTO tblzeiten (fkProjekt, fkTaetigkeit, fkMitarbeiter, Start, Ende) VALUES (:projekt, :taetigkeiten, :mitarbeiter, :datumstart, :datumende)'); 
     
-            $stmt->bindValue('kunde', $kunde);
+            $stmt->bindValue('projekt', $projekt);
+            $stmt->bindValue('taetigkeiten', $taetigkeiten);
+            $stmt->bindValue('mitarbeiter', $mitarbeiter);
             $stmt->bindValue('datumstart', $datumstart);
             $stmt->bindValue('datumende', $datumende);
-            $stmt->bindValue('taetigkeiten', $taetigkeiten);
             $stmt->execute();
-    
-        }
       
         header("Location: " . $_SERVER['HTTP_REFERER']);
     }
