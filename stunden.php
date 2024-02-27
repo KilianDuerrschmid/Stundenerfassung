@@ -2,19 +2,31 @@
 require "inc/db-connect.php";
 
 $kundeFilter = isset($_POST['kundeFilter']) ? $_POST['kundeFilter'] : '';
+$mitarbeiterFilter = isset($_POST['mitarbeiterFilter']) ? $_POST['mitarbeiterFilter'] : '';
+$projektFilter = isset($_POST['projektFilter']) ? $_POST['projektFilter'] : '';
 $startDatum = isset($_POST['startDatum']) ? $_POST['startDatum'] : '';
 $endeDatum = isset($_POST['endeDatum']) ? $_POST['endeDatum'] : '';
 
 $sql = "
     SELECT SUM(TIMESTAMPDIFF(MINUTE, tblzeiten.Start, tblzeiten.Ende)) AS GesamtMinuten
     FROM tblzeiten
-    INNER JOIN tblkunden ON tblzeiten.fkKunde = tblkunden.KundenID
+    INNER JOIN tblProjekt on tblzeiten.fkProjekt = tblProjekt.ProjektID
+    INNER JOIN tblkunden ON tblProjekt.fkKunde = tblkunden.KundenID
     WHERE 1 = 1
 ";
 
 if (!empty($kundeFilter)) {
-    $sql .= " AND tblzeiten.fkKunde = :kundeFilter";
+    $sql .= " AND tblProjekt.fkKunde = :kundeFilter";
 }
+
+if (!empty($mitarbeiterFilter)) {
+    $sql .= " AND tblzeiten.fkMitarbeiter = :mitarbeiterFilter";
+}
+
+if (!empty($projektFilter)) {
+    $sql .= " AND tblzeiten.fkProjekt = :projektFilter";
+}
+
 if (!empty($startDatum)) {
     $sql .= " AND tblzeiten.Start >= :startDatum";
 }
@@ -27,6 +39,15 @@ $stmt = $pdo->prepare($sql);
 if (!empty($kundeFilter)) {
     $stmt->bindParam(':kundeFilter', $kundeFilter);
 }
+
+if (!empty($mitarbeiterFilter)) {
+    $stmt->bindParam(':mitarbeiterFilter', $mitarbeiterFilter);
+}
+
+if (!empty($projektFilter)) {
+    $stmt->bindParam(':projektFilter', $projektFilter);
+}
+
 if (!empty($startDatum)) {
     $stmt->bindParam(':startDatum', $startDatum);
 }
