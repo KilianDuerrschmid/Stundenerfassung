@@ -2,6 +2,8 @@
 require "inc/db-connect.php";
 
 $kundeFilter = isset($_POST['kundeFilter']) ? $_POST['kundeFilter'] : '';
+$mitarbeiterFilter = isset($_POST['mitarbeiterFilter']) ? $_POST['mitarbeiterFilter'] : '';
+$projektFilter = isset($_POST['projektFilter']) ? $_POST['projektFilter'] : '';
 $startDatum = isset($_POST['startDatum']) ? $_POST['startDatum'] : '';
 $endeDatum = isset($_POST['endeDatum']) ? $_POST['endeDatum'] : '';
 
@@ -16,6 +18,15 @@ $sql = "
 if (!empty($kundeFilter)) {
     $sql .= " AND tblProjekt.fkKunde = :kundeFilter";
 }
+
+if (!empty($mitarbeiterFilter)) {
+    $sql .= " AND tblzeiten.fkMitarbeiter = :mitarbeiterFilter";
+}
+
+if (!empty($projektFilter)) {
+    $sql .= " AND tblzeiten.fkProjekt = :projektFilter";
+}
+
 if (!empty($startDatum)) {
     $sql .= " AND tblzeiten.Start >= :startDatum";
 }
@@ -28,6 +39,15 @@ $stmt = $pdo->prepare($sql);
 if (!empty($kundeFilter)) {
     $stmt->bindParam(':kundeFilter', $kundeFilter);
 }
+
+if (!empty($mitarbeiterFilter)) {
+    $stmt->bindParam(':mitarbeiterFilter', $mitarbeiterFilter);
+}
+
+if (!empty($projektFilter)) {
+    $stmt->bindParam(':projektFilter', $projektFilter);
+}
+
 if (!empty($startDatum)) {
     $stmt->bindParam(':startDatum', $startDatum);
 }

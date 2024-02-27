@@ -21,7 +21,7 @@
 
     $stmt_projekt = $pdo->prepare("SELECT * FROM tblProjekt");
     $stmt_projekt->execute();
-    $projekt = $stmt_projekt->fetchAll(PDO::FETCH_ASSOC);
+    $projekte = $stmt_projekt->fetchAll(PDO::FETCH_ASSOC);
 
     $stmt_taetigkeiten = $pdo->prepare("SELECT * FROM tbltaetigkeit");
     $stmt_taetigkeiten->execute();
@@ -38,6 +38,26 @@
     <div class="container mt-3">
         <form action="" method="POST" class="mb-5">
             <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="mitarbeiterFilter" class="form-label">Mitarbeiter</label>
+                    <select class="form-select" id="mitarbeiterFilter" name="mitarbeiterFilter">
+                        <option value="">Alle</option>
+                        <?php foreach ($mitarbeiter as $ma) : ?>
+                            <option value="<?php echo $ma['MitarbeiterID']; ?>"><?php echo $ma['MitarbeiterName']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="projektFilter" class="form-label">Projekt</label>
+                    <select class="form-select" id="projektFilter" name="projektFilter">
+                        <option value="">Alle</option>
+                        <?php foreach ($projekte as $projekt) : ?>
+                            <option value="<?php echo $projekt['ProjektID']; ?>"><?php echo $projekt['titel']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <div class="col-md-4">
                     <label for="kundeFilter" class="form-label">Kunde</label>
                     <select class="form-select" id="kundeFilter" name="kundeFilter">
@@ -100,7 +120,7 @@
                         <div class="mb-3">
                             <label for="projekt" class="form-label">Projekt</label>
                             <select class="form-select" id="projekt" name="projekt">
-                                <?php foreach ($projekt as $projekt) : ?>
+                                <?php foreach ($projekte as $projekt) : ?>
                                     <option value="<?php echo $projekt['ProjektID']; ?>"><?php echo $projekt['titel']; ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -229,6 +249,12 @@
             </div>
         </div>
     </div>
+    </form>
+    </div>
+    </div>
+    </div>
+
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
@@ -245,6 +271,8 @@
                     type: 'POST',
                     data: {
                         kundeFilter: $('#kundeFilter').val(),
+                        mitarbeiterFilter: $('#mitarbeiterFilter').val(),
+                        projektFilter: $('#projektFilter').val(),
                         startDatum: $('#startDatum').val(),
                         endeDatum: $('#endeDatum').val()
                     },
@@ -260,6 +288,8 @@
                 // Erstelle ein Objekt für die Daten, die gesendet werden sollen
                 var data = {};
                 if ($('#kundeFilter').val()) data.kundeFilter = $('#kundeFilter').val();
+                if ($('#mitarbeiterFilter').val()) data.mitarbeiterFilter = $('#mitarbeiterFilter').val();
+                if ($('#projektFilter').val()) data.projektFilter = $('#projektFilter').val();
                 if ($('#startDatum').val()) data.startDatum = $('#startDatum').val();
                 if ($('#endeDatum').val()) data.endeDatum = $('#endeDatum').val();
 
@@ -273,17 +303,13 @@
                     }
                 });
             }
-
             // Event-Handler für die Filter
-            $('#kundeFilter, #startDatum, #endeDatum').on('change', filterCards);
+            $('#kundeFilter, #mitarbeiterFilter, #projektFilter, #startDatum, #endeDatum').on('change', filterCards);
 
             // Initialer Aufruf, um beim Laden der Seite die Karten und Stunden anzuzeigen
             filterCards();
         });
     </script>
-
-
-
 </body>
 
 </html>
