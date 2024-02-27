@@ -9,7 +9,7 @@
 
         require_once('config.php');
 
-        $sql = 'INSERT INTO arbeit 
+        $sql = 'INSERT INTO arbeitszeit 
         (kundeId, titel, beschreibung, start, ende) 
         VALUES (?, ?, ?, ?, ?)';
 

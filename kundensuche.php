@@ -12,7 +12,7 @@ if ($kunde == "") $kunde = null;
 
 require_once('config.php');
 
-$sql = 'SELECT * FROM arbeit where (? is null or kundeId = ?) and (? is null or start = ?) and (? is null or ende = ?)';
+$sql = 'SELECT * FROM arbeitszeit where (? is null or kundeId = ?) and (? is null or start = ?) and (? is null or ende = ?)';
 
 if ($stmt = mysqli_prepare($link, $sql)) {
 
