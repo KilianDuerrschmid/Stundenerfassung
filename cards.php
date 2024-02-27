@@ -7,14 +7,15 @@ $endeDatum = isset($_POST['endeDatum']) ? $_POST['endeDatum'] : '';
 
 $sql = "SELECT tblzeiten.*, tblkunden.KundenName, tblkunden.Farbe, tbltaetigkeit.Taetigkeit
           FROM tblzeiten
-          INNER JOIN tblkunden ON tblzeiten.fkKunde = tblkunden.KundenID
+          INNER JOIN tblProjekt on tblzeiten.fkProjekt = tblProjekt.ProjektID
+          INNER JOIN tblkunden ON tblProjekt.fkKunde = tblkunden.KundenID
           INNER JOIN tbltaetigkeit ON tblzeiten.fkTaetigkeit = tbltaetigkeit.TaetigkeitID";
 
 $bedingungen = [];
 $params = [];
 
 if (!empty($kundenFilter)) {
-    $bedingungen[] = "tblzeiten.fkKunde = :kundeFilter";
+    $bedingungen[] = "tblProjekt.fkKunde = :kundeFilter";
     $params[':kundeFilter'] = $kundenFilter;
 }
 
