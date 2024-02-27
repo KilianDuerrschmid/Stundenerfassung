@@ -17,7 +17,7 @@ require_once('config.php');
 </script>
 <?php
     
-$sql = "SELECT * FROM arbeit where (? is null or kundeId = ?) and (? is null or DATE(start) >= ?) and (? is null or DATE(ende) >= ?)";
+$sql = "SELECT * FROM arbeitszeit where (? is null or kundeId = ?) and (? is null or DATE(start) >= ?) and (? is null or DATE(ende) >= ?)";
 
 if ($stmt = mysqli_prepare($link, $sql)) {
 

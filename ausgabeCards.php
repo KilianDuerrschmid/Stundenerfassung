@@ -76,7 +76,7 @@
         require_once('config.php');
 
         try {
-            $query = $link->prepare('SELECT * from arbeit');
+            $query = $link->prepare('SELECT * from arbeitszeit');
             $query->execute();
             $res = $query->get_result();
 
