@@ -8,12 +8,13 @@ $endeDatum = isset($_POST['endeDatum']) ? $_POST['endeDatum'] : '';
 $sql = "
     SELECT SUM(TIMESTAMPDIFF(MINUTE, tblzeiten.Start, tblzeiten.Ende)) AS GesamtMinuten
     FROM tblzeiten
-    INNER JOIN tblkunden ON tblzeiten.fkKunde = tblkunden.KundenID
+    INNER JOIN tblProjekt on tblzeiten.fkProjekt = tblProjekt.ProjektID
+    INNER JOIN tblkunden ON tblProjekt.fkKunde = tblkunden.KundenID
     WHERE 1 = 1
 ";
 
 if (!empty($kundeFilter)) {
-    $sql .= " AND tblzeiten.fkKunde = :kundeFilter";
+    $sql .= " AND tblProjekt.fkKunde = :kundeFilter";
 }
 if (!empty($startDatum)) {
     $sql .= " AND tblzeiten.Start >= :startDatum";
